@@ -65,10 +65,10 @@ func readString(r io.Reader) string {
 		b := make([]byte, 1)
 		_, err := io.ReadFull(r, b)
 		must(err)
-		buf.WriteByte(b[0])
 		if b[0] == 0 {
 			break
 		}
+		buf.WriteByte(b[0])
 	}
 	return buf.String()
 }
