@@ -58,6 +58,9 @@ func readString(r io.Reader) string {
 		// Fast path.
 		bytes, err := buf.ReadBytes(0)
 		must(err)
+		if len(bytes) > 0 {
+			return string(bytes[:len(bytes)-1])
+		}
 		return string(bytes)
 	}
 	var buf bytes.Buffer
