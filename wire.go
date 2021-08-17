@@ -53,20 +53,11 @@ func readLongLong(r io.Reader) (v int64) {
 }
 
 func readString(r io.Reader) string {
-	if buf, ok := r.(*bytes.Buffer); ok {
-		// See if we are being passed a bytes.Buffer.
-		// Fast path.
-		bytesBuf, err := buf.ReadBytes(0)
-		must(err)
-		if len(bytesBuf) > 0 {
-			return string(bytesBuf[:len(bytesBuf)-1])
-		}
-		return string(bytesBuf)
-	}
+	var err error
 	var buf bytes.Buffer
+	b := make([]byte, 1)
 	for {
-		b := make([]byte, 1)
-		_, err := io.ReadFull(r, b)
+		_, err = io.ReadFull(r, b)
 		must(err)
 		if b[0] == 0 {
 			break

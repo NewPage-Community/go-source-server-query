@@ -1,17 +1,11 @@
-# go-steam
+# go-source-server-query
 
-**go-steam** is a Go library for querying Source servers.
+**go-source-server-query** is a Go library for querying Source servers.
 
-## Requirements
-
-* Go 1.1 or above
+Forked from [kidoman/go-steam](https://github.com/kidoman/go-steam), which no longer update.
 
 ## Installation
 
 ```
-go get github.com/kidoman/go-steam
+go get -u github.com/NewPage-Community/go-source-server-query
 ```
-
-## License
-
-This code is free software; you can redistribute it and/or modify it under the terms of the MIT License. A copy of this license can be found in the included LICENSE file.

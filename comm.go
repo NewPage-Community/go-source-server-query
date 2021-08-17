@@ -301,8 +301,8 @@ func (r *PlayersInfoResponse) unmarshalBinary(data []byte) (err error) {
 	count := toInt(readByte(buf))
 	for i := 0; i < count; i++ {
 		// Read the chunk index
-		readByte(buf)
 		var p Player
+		p.Index = toInt(readByte(buf))
 		p.Name = readString(buf)
 		p.Score = toInt(readLong(buf))
 		p.Duration = float64(readFloat(buf))
@@ -312,6 +312,7 @@ func (r *PlayersInfoResponse) unmarshalBinary(data []byte) (err error) {
 }
 
 type Player struct {
+	Index    int
 	Name     string
 	Score    int
 	Duration float64
