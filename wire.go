@@ -56,12 +56,12 @@ func readString(r io.Reader) string {
 	if buf, ok := r.(*bytes.Buffer); ok {
 		// See if we are being passed a bytes.Buffer.
 		// Fast path.
-		bytes, err := buf.ReadBytes(0)
+		bytesBuf, err := buf.ReadBytes(0)
 		must(err)
-		if len(bytes) > 0 {
-			return string(bytes[:len(bytes)-1])
+		if len(bytesBuf) > 0 {
+			return string(bytesBuf[:len(bytesBuf)-1])
 		}
-		return string(bytes)
+		return string(bytesBuf)
 	}
 	var buf bytes.Buffer
 	for {

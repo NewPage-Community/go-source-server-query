@@ -20,7 +20,7 @@ func newUDPSocket(dial DialFn, addr string) (*udpSocket, error) {
 }
 
 func (s *udpSocket) close() {
-	s.conn.Close()
+	_ = s.conn.Close()
 }
 
 func (s *udpSocket) send(payload []byte) error {

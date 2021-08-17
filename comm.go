@@ -7,11 +7,11 @@ import (
 )
 
 const (
-	hInfoRequest                  = 'T'
-	hInfoResponse                 = 'I'
-	hPlayersInfoRequest           = 'U'
-	hPlayersInfoChallengeResponse = 'A'
-	hPlayersInfoResponse          = 'D'
+	hChallengeResponse   = 'A'
+	hInfoRequest         = 'T'
+	hInfoResponse        = 'I'
+	hPlayersInfoRequest  = 'U'
+	hPlayersInfoResponse = 'D'
 )
 
 type ServerType int
@@ -147,13 +147,15 @@ var vacStrings = map[VAC]string{
 }
 
 type infoRequest struct {
+	Challenge int
 }
 
-func (infoRequest) marshalBinary() ([]byte, error) {
+func (r infoRequest) marshalBinary() ([]byte, error) {
 	buf := new(bytes.Buffer)
 	writeRequestPrefix(buf)
 	writeByte(buf, hInfoRequest)
 	writeString(buf, "Source Engine Query")
+	writeLong(buf, int32(r.Challenge))
 	return buf.Bytes(), nil
 }
 
@@ -258,15 +260,15 @@ func (r playersInfoRequest) marshalBinary() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func isPlayersInfoChallengeResponse(b []byte) bool {
-	return b[0] == hPlayersInfoChallengeResponse
+func isChallengeResponse(b []byte) bool {
+	return b[0] == hChallengeResponse
 }
 
-type playersInfoChallengeResponse struct {
+type ChallengeResponse struct {
 	Challenge int
 }
 
-func (r *playersInfoChallengeResponse) unmarshalBinary(data []byte) (err error) {
+func (r *ChallengeResponse) unmarshalBinary(data []byte) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			err = r.(error)
@@ -274,7 +276,7 @@ func (r *playersInfoChallengeResponse) unmarshalBinary(data []byte) (err error) 
 	}()
 	buf := bytes.NewBuffer(data)
 	header := readByte(buf)
-	if header != hPlayersInfoChallengeResponse {
+	if header != hChallengeResponse {
 		panic(errBadData)
 	}
 	r.Challenge = toInt(readLong(buf))
